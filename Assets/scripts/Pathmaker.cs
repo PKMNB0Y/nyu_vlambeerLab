@@ -11,27 +11,47 @@ using UnityEngine;
 
 public class Pathmaker : MonoBehaviour {
 
-// STEP 2: ============================================================================================
-// translate the pseudocode below
+    // STEP 2: ============================================================================================
+    // translate the pseudocode below
+    //	DECLARE CLASS MEMBER VARIABLES:
+    //	Declare a private integer called counter that starts at 0; 		// counter var will track how many floor tiles I've instantiated
+    //	Declare a public Transform called floorPrefab, assign the prefab in inspector;
+    //	Declare a public Transform called pathmakerSpherePrefab, assign the prefab in inspector; 		// you'll have to make a "pathmakerSphere" prefab later
 
-//	DECLARE CLASS MEMBER VARIABLES:
-//	Declare a private integer called counter that starts at 0; 		// counter var will track how many floor tiles I've instantiated
-//	Declare a public Transform called floorPrefab, assign the prefab in inspector;
-//	Declare a public Transform called pathmakerSpherePrefab, assign the prefab in inspector; 		// you'll have to make a "pathmakerSphere" prefab later
+    int tileCounter = 0;
+    public Transform floorPrefab;
+    public Transform pathmakerSpherePrefab;
 
 
 	void Update () {
+        if (tileCounter < 50)
+        {
+            float randNo = Random.Range(0f, 1f);
+            if (randNo < .25f)
+            {
+                transform.Rotate(0, 90f, 0);
+            }
+            else if (randNo < .5f)
+            {
+                transform.Rotate(0, -90f, 0);
+            }
+            else if (randNo > .99f)
+            {
+                Instantiate(pathmakerSpherePrefab, transform.position, transform.rotation);
+            }
+        }
 //		If counter is less than 50, then:
-//			Generate a random number from 0.0f to 1.0f;
-//			If random number is less than 0.25f, then rotate myself 90 degrees;
-//				... Else if number is 0.25f-0.5f, then rotate myself -90 degrees;
-//				... Else if number is 0.99f-1.0f, then instantiate a pathmakerSpherePrefab clone at my current position;
-//			// end elseIf
+//		Generate a random number from 0.0f to 1.0f;
+//		If random number is less than 0.25f, then rotate myself 90 degrees;
+//			... Else if number is 0.25f-0.5f, then rotate myself -90 degrees;
+//			... Else if number is 0.99f-1.0f, then instantiate a pathmakerSpherePrefab clone at my current position;
+//		// end elseIf
 
-//			Instantiate a floorPrefab clone at current position;
-//			Move forward ("forward", as in, the direction I'm currently facing) by 5 units;
+//		Instantiate a floorPrefab clone at current position;
+
+//		Move forward ("forward" in local space, relative to the direction I'm facing) by 5 units;
 //			Increment counter;
-//		Else:
+//			Else:
 //			Destroy my game object; 		// self destruct if I've made enough tiles already
 	}
 
