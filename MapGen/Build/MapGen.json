@@ -1,0 +1,9 @@
+{
+"TOTAL_MEMORY": 268435456,
+"dataUrl": "MapGen.data.unityweb",
+"asmCodeUrl": "MapGen.asm.code.unityweb",
+"asmMemoryUrl": "MapGen.asm.memory.unityweb",
+"asmFrameworkUrl": "MapGen.asm.framework.unityweb",
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20"
+}

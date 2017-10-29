@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // MAZE PROC GEN LAB
 // all students: complete steps 1-6, as listed in this file
@@ -18,47 +19,85 @@ public class Pathmaker : MonoBehaviour {
     //	Declare a public Transform called floorPrefab, assign the prefab in inspector;
     //	Declare a public Transform called pathmakerSpherePrefab, assign the prefab in inspector; 		// you'll have to make a "pathmakerSphere" prefab later
 
-    int tileCounter = 0;
-    public Transform floorPrefab;
-    public Transform pathmakerSpherePrefab;
+    public static int tileCounter = 0;
+    public int tileLimit = 500;
+    public float ltCutoff, rtCutoff, newFinderCutoff;
+    public Transform floorPrefab1, floorPrefab2, floorPrefab3;
+    public Pathmaker pathmakerSpherePrefab;
+    public bool canReset = true;
 
+    private void Start()
+    {
+        ltCutoff = Random.Range(0f, .4f);
+        rtCutoff = Random.Range(ltCutoff, .8f);
+        newFinderCutoff = Random.Range(.95f, 1f);
+    }
 
-	void Update () {
-        if (tileCounter < 50)
+    void Update () {
+        if (canReset)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                SceneManager.LoadScene("mainLabScene");
+                tileCounter = 0;
+            }
+        }
+        if (tileCounter < tileLimit)
         {
             float randNo = Random.Range(0f, 1f);
-            if (randNo < .25f)
+            if (randNo < ltCutoff)
             {
                 transform.Rotate(0, 90f, 0);
             }
-            else if (randNo < .5f)
+            else if (randNo < rtCutoff)
             {
                 transform.Rotate(0, -90f, 0);
             }
-            else if (randNo > .99f)
+            else if (randNo > newFinderCutoff)
             {
-                Instantiate(pathmakerSpherePrefab, transform.position, transform.rotation);
+                Pathmaker fT = Instantiate(pathmakerSpherePrefab, transform.position, transform.rotation);
+                fT.tileLimit = tileLimit;
+                fT.ltCutoff = ltCutoff;
+                fT.rtCutoff = rtCutoff;
+                fT.newFinderCutoff = newFinderCutoff;
+                fT.floorPrefab1 = floorPrefab1;
+                fT.floorPrefab2 = floorPrefab2;
+                fT.floorPrefab3 = floorPrefab3;
+                fT.canReset = false;
+                fT.pathmakerSpherePrefab = pathmakerSpherePrefab;
             }
+            if (!Physics.CheckSphere(transform.position, 1))
+            {
+                if (Random.Range(0, 3) == 0)
+                {
+                    Transform floorTile = Instantiate(floorPrefab1, transform.position, Quaternion.identity);
+                }
+                else if (Random.Range(0, 3) == 1)
+                {
+                    Transform floorTile = Instantiate(floorPrefab2, transform.position, Quaternion.identity);
+                }
+                else
+                {
+                    Transform floorTile = Instantiate(floorPrefab3, transform.position, Quaternion.identity);
+                }
+                //floorTileList[tileCounter] = floorTile;
+                tileCounter++;
+            }
+            transform.position += transform.forward * 5f;
         }
-//		If counter is less than 50, then:
-//		Generate a random number from 0.0f to 1.0f;
-//		If random number is less than 0.25f, then rotate myself 90 degrees;
-//			... Else if number is 0.25f-0.5f, then rotate myself -90 degrees;
-//			... Else if number is 0.99f-1.0f, then instantiate a pathmakerSpherePrefab clone at my current position;
-//		// end elseIf
-
-//		Instantiate a floorPrefab clone at current position;
-
-//		Move forward ("forward" in local space, relative to the direction I'm facing) by 5 units;
-//			Increment counter;
-//			Else:
-//			Destroy my game object; 		// self destruct if I've made enough tiles already
+        else
+        {
+            
+        }
 	}
 
-} // end of class scope
 
+
+} 
 // MORE STEPS BELOW!!!........
 
+    
+    
 
 
 
